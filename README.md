@@ -15,9 +15,28 @@ The app is live on [Google Play Store →](https://play.google.com/store/apps/de
 
 ---
 
+### 🌟 App Preview
+![Feature Image](screenshots/Featue%20Image.png)
+
+---
+
 ## 🚀 What is OptionXI?
 
 **OptionXI** is a powerful, easy-to-use app for simulating stock market trading using real market data from the Indian stock market. Whether you're a beginner or a seasoned trader, you can practice, learn, and even contribute to a system built with transparency and accountability in mind.
+
+---
+
+### 📸 Screenshots
+
+Here are some screenshots showcasing various parts of the app:
+
+<img src="screenshots/Home%20Page%20New.png" height="200">
+<img src="screenshots/Home%20Page%20new%202.png" height="200">
+<img src="screenshots/One%20click%20Login.png" height="200">
+<img src="screenshots/Interactive%20Profile.png" height="200">
+<img src="screenshots/Search%20Stocks.png" height="200">
+<img src="screenshots/Market%20Sentiment.png" height="200">
+<img src="screenshots/Market%20Tools.png" height="200">
 
 ---
 
@@ -176,16 +195,6 @@ Most of the UI and code in this project was generated with the help of AI. It's 
 - **Claude**: My go-to for designing clean interfaces and writing structured code. – [claude.ai](https://claude.ai)
 - **DeepSeek**: I rely on DeepSeek to catch and fix tricky bugs in my code. – [deepseek.com](https://deepseek.com)
 - **Gemini**: Great for deep debugging and understanding complex code behavior. – [gemini.google.com](https://gemini.google.com)
-
----
-
-### 💡 How AI Helped Us Build Better
-
-- **📝 Content Creation**: Comprehensive documentation and user-friendly copy
-- **🎨 UI/UX Development**: Intuitive interface design and backend architecture  
-- **🔍 Code Quality**: Advanced debugging, optimization, and performance tuning
-- **🛡️ Quality Assurance**: Thorough code review and bug detection
-- **⚡ Development Speed**: Faster iteration cycles and reduced development time
 
 ---
 
