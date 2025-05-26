@@ -1,0 +1,64 @@
+name: Flutter Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # - name: Analyze Dart code
+      #   run: flutter analyze
+
+      # - name: Run tests
+      #   run: flutter test
+
+      # - name: Build APK (release)
+      #   run: flutter build apk --release
+      
+      - name: Build APK (debug)
+        run: flutter build apk --debug
+
+  build-ios:
+    name: Build iOS (No Code Sign)
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # - name: Analyze Dart code
+      #   run: flutter analyze
+
+      # - name: Run tests
+      #   run: flutter test
+
+      - name: Clean CocoaPods and install again
+        run: |
+          rm -rf ios/Pods ios/Podfile.lock
+          cd ios
+          pod install --repo-update
+          cd ..
+
+      - name: Build iOS (release)
+        run: flutter build ios --no-codesign
+

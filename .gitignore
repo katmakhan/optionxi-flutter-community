@@ -1,0 +1,91 @@
+# ─────────────────────────────────────────────
+# 🧰 Flutter & Dart
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.melos_tool/
+*.lock
+
+# ─────────────────────────────────────────────
+# 💻 Android
+android/.gradle/
+android/build/
+android/app/build/
+android/app/.cxx/
+android/local.properties
+captures/
+
+# 🔐 Keystore and signing configs (never commit)
+android/key.properties
+**/*.keystore
+**/*.jks
+
+# ─────────────────────────────────────────────
+# 🍏 iOS
+ios/Pods/
+ios/Podfile.lock
+ios/Runner.xcworkspace/
+ios/Flutter/.last_build_id
+ios/.symlinks/
+ios/.flutter-plugins
+ios/.flutter-plugins-dependencies
+ios/.dart_tool/
+ios/DerivedData/
+ios/Flutter/Flutter.podspec
+
+# ─────────────────────────────────────────────
+# 📁 IDEs and Editors
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# ─────────────────────────────────────────────
+# 🗂️ System files
+.DS_Store
+*.tmp
+*.swp
+*.log
+*.bak
+
+# ─────────────────────────────────────────────
+# 🔐 Secrets and API Keys
+firebase-debug.log
+.firebase/
+**/google-services.json
+# But DO NOT ignore the one specifically for the debug build
+!android/app/src/debug/google-services.json
+
+# Added dummy data
+# **/GoogleService-Info.plist
+
+.env
+.env.*
+
+# Allow .env.example
+!.env.example
+
+# ─────────────────────────────────────────────
+# 🧪 Test Coverage
+coverage/
+test/**/outputs/
+
+# ─────────────────────────────────────────────
+# 💻 Optional Platform Folders (ignore if unused)
+linux/
+macos/
+windows/
+web/
+
+# ─────────────────────────────────────────────
+# 🛠️ Other artifacts
+app.*.symbols
+app.*.map.json
+migrate_working_dir/
+**/supabase_migration.dart
+
