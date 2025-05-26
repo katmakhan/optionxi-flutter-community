@@ -30,14 +30,17 @@ The app is live on [Google Play Store →](https://play.google.com/store/apps/de
 
 Here are some screenshots showcasing various parts of the app:
 
-<img src="screenshots/Home%20Page%20New.png" height="200">
-<img src="screenshots/Home%20Page%20new%202.png" height="200">
-<img src="screenshots/One%20click%20Login.png" height="200">
-<img src="screenshots/Interactive%20Profile.png" height="200">
-<img src="screenshots/Search%20Stocks.png" height="200">
-<img src="screenshots/Market%20Sentiment.png" height="200">
-<img src="screenshots/Market%20Tools.png" height="200">
+<div style="overflow-x: auto; white-space: nowrap; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
 
+  <img src="screenshots/Home%20Page%20New.png" height="200" style="display: inline-block; margin-right: 10px;">
+  <img src="screenshots/Home%20Page%20new%202.png" height="200" style="display: inline-block; margin-right: 10px;">
+  <img src="screenshots/One%20click%20Login.png" height="200" style="display: inline-block; margin-right: 10px;">
+  <img src="screenshots/Interactive%20Profile.png" height="200" style="display: inline-block; margin-right: 10px;">
+  <img src="screenshots/Search%20Stocks.png" height="200" style="display: inline-block; margin-right: 10px;">
+  <img src="screenshots/Market%20Sentiment.png" height="200" style="display: inline-block; margin-right: 10px;">
+  <img src="screenshots/Market%20Tools.png" height="200" style="display: inline-block; margin-right: 10px;">
+
+</div>
 ---
 
 ## 🔑 Key Features
@@ -186,6 +189,7 @@ Most of the UI and code in this project was generated with the help of AI. It's 
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Claude_AI_logo.svg/1380px-Claude_AI_logo.svg.png" alt="Claude" height="40"/> | **Claude** | UI Design & Coding |
 | <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/DeepSeek_logo.svg" alt="DeepSeek" height="40"/> | **DeepSeek** | Error Correction |
 | <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg" alt="Gemini" height="40"/> | **Gemini** | Debugging |
+
 
 ---
 
