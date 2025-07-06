@@ -34,10 +34,10 @@ jobs:
 
   build-ios:
     name: Build iOS (No Code Sign)
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
