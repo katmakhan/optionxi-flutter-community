@@ -11,7 +11,7 @@
 **OptionXI** is **India's first open-source virtual trading platform** – built for education, strategy testing, and transparent community collaboration.
 
 The app is live on [Google Play Store →](https://play.google.com/store/apps/details?id=com.optionxi.app)  
-> ⚠️ _This repository is the **open-source Flutter front-end**. The backend (Supabase/Postgres) and the web version (app.optionxi.com) will also be made open-source soon._
+> ⚠️ _This repository is the **open-source Flutter front-end**. The backend (Supabase/Postgres) will also be made open-source soon._
 
 ---
 
@@ -39,6 +39,8 @@ Here are some screenshots showcasing various parts of the app:
   <img src="screenshots/Market%20Sentiment.png" width="120"/>
   <img src="screenshots/Market%20Tools.png" width="120"/>
 </p>
+
+Made using [The Applaunchpad](https://theapplaunchpad.com/) - Create your own stunning playstore/appstore screenshots
 
 ---
 
@@ -181,14 +183,16 @@ Let's make stock education free, accessible, and community-driven.
 
 Most of the UI and code in this project was generated with the help of AI. It's efficient, reliable, and good enough to put into production. In fact, around **90% of the code was developed by AI**, showing how powerful and practical AI tools have become in modern development workflows.
 
+## 🤖 AI Platforms Used
 
-| Logo | Platform | Used For |
-|------|----------|----------|
-| <img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/ChatGPT-Logo.svg" alt="ChatGPT" height="40"/> | **ChatGPT** | Content Generation |
-| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Claude_AI_logo.svg/1380px-Claude_AI_logo.svg.png" alt="Claude" height="40"/> | **Claude** | UI Design & Coding |
-| <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/DeepSeek_logo.svg" alt="DeepSeek" height="40"/> | **DeepSeek** | Error Correction |
-| <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg" alt="Gemini" height="40"/> | **Gemini** | Debugging |
+<div>
 
+| <img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/ChatGPT-Logo.svg" alt="ChatGPT" width="48" height="48"/> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Claude_AI_logo.svg/1380px-Claude_AI_logo.svg.png" alt="Claude" width="148" height="48"/> | <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/DeepSeek_logo.svg" alt="DeepSeek" width="148" height="48"/> | <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg" alt="Gemini" width="48" height="48"/> |
+|:---:|:---:|:---:|:---:|
+| **ChatGPT** | **Claude** | **DeepSeek** | **Gemini** |
+| Content Generation | UI Design & Coding | Error Correction | Debugging |
+
+</div>
 
 ---
 
