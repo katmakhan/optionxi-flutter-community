@@ -30,17 +30,16 @@ The app is live on [Google Play Store →](https://play.google.com/store/apps/de
 
 Here are some screenshots showcasing various parts of the app:
 
-<div style="overflow-x: auto; white-space: nowrap; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+<p>
+  <img src="screenshots/Home%20Page%20New.png" width="120"/>
+  <img src="screenshots/Home%20Page%20new%202.png" width="120"/>
+  <img src="screenshots/One%20click%20Login.png" width="120"/>
+  <img src="screenshots/Interactive%20Profile.png" width="120"/>
+  <img src="screenshots/Search%20Stocks.png" width="120"/>
+  <img src="screenshots/Market%20Sentiment.png" width="120"/>
+  <img src="screenshots/Market%20Tools.png" width="120"/>
+</p>
 
-  <img src="screenshots/Home%20Page%20New.png" height="200" style="display: inline-block; margin-right: 10px;">
-  <img src="screenshots/Home%20Page%20new%202.png" height="200" style="display: inline-block; margin-right: 10px;">
-  <img src="screenshots/One%20click%20Login.png" height="200" style="display: inline-block; margin-right: 10px;">
-  <img src="screenshots/Interactive%20Profile.png" height="200" style="display: inline-block; margin-right: 10px;">
-  <img src="screenshots/Search%20Stocks.png" height="200" style="display: inline-block; margin-right: 10px;">
-  <img src="screenshots/Market%20Sentiment.png" height="200" style="display: inline-block; margin-right: 10px;">
-  <img src="screenshots/Market%20Tools.png" height="200" style="display: inline-block; margin-right: 10px;">
-
-</div>
 ---
 
 ## 🔑 Key Features
