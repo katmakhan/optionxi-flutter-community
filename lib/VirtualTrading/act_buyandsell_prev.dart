@@ -394,6 +394,28 @@ class _BuyandSellPagePrevState extends State<BuyandSellPagePrev> {
                                                 widget.stockname.toString())),
                                   );
                                 }
+                                if (widget.segment == "FNO") {
+                                  if (widget.stockname
+                                      .toString()
+                                      .toUpperCase()
+                                      .startsWith("BANKNIFTY")) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BrowserLite_V(
+                                              "https://in.tradingview.com/chart/?symbol=" +
+                                                  "BANKNIFTY")),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BrowserLite_V(
+                                              "https://in.tradingview.com/chart/?symbol=" +
+                                                  "NIFTY")),
+                                    );
+                                  }
+                                }
                               },
                               child: _buildStockInfoCard(isDark)),
                           if (_hasShortPosition && _orderType == 'BUY') ...[

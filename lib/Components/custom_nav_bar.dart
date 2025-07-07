@@ -53,9 +53,9 @@ class CustomBottomNavBar extends StatelessWidget {
               children: [
                 _buildNavItem(0, Icons.home_outlined, Icons.home_rounded,
                     "Home", context),
-                _buildNavItem(2, Icons.trending_up_outlined, Icons.trending_up,
+                _buildNavItem(1, Icons.trending_up_outlined, Icons.trending_up,
                     "Trade", context),
-                _buildNavItem(1, Icons.bookmark_border,
+                _buildNavItem(2, Icons.bookmark_border,
                     Icons.bookmark_border_rounded, "Watchlist", context),
                 _buildNavItem(3, Icons.troubleshoot_outlined,
                     Icons.troubleshoot_rounded, "Tools", context),

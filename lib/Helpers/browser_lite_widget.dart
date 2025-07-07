@@ -50,10 +50,6 @@ class _BrowserLite_WidgetState extends State<BrowserLite_Widget> {
     return Stack(
       children: [
         WebViewWidget(controller: _controller),
-        if (isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
       ],
     );
   }
