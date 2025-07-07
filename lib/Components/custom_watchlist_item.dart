@@ -386,7 +386,7 @@ class _WatchlistItemState extends State<WatchlistItem> {
                               MaterialPageRoute(
                                   builder: (context) => BrowserLite_V(
                                       "https://in.tradingview.com/chart/?symbol=NSE%3A" +
-                                          stock.stckname.toString())),
+                                          stock.symbol.toString().split("-")[0].split(":")[1])),
                             );
                           },
                           child: Padding(
