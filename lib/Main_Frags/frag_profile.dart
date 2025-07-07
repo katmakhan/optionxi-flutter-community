@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:optionxi/Auth_Service/auth_service.dart';
 import 'package:optionxi/Helpers/open_url.dart';
+import 'package:optionxi/Main_Pages/act_leaderboard.dart';
 import 'package:optionxi/Main_Pages/act_news.dart';
 import 'package:optionxi/Main_Pages/act_portfolio.dart';
 import 'package:optionxi/Main_Pages/act_predictions.dart';
@@ -10,6 +14,7 @@ import 'package:optionxi/Main_Pages/act_traderprofile.dart';
 import 'package:optionxi/Main_Pages/act_tradingideas.dart';
 import 'package:optionxi/MobileLink/link_phone_screen.dart';
 import 'package:optionxi/Theme/theme_controller.dart';
+import 'package:optionxi/VirtualTrading/act_broker_connectpage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TradingProfilePage extends StatefulWidget {
@@ -20,6 +25,10 @@ class TradingProfilePage extends StatefulWidget {
 class _TradingProfilePageState extends State<TradingProfilePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  // Add these variables
+  bool _privacyMode = false;
+  bool _isLoading = true;
+  final DatabaseReference _database = FirebaseDatabase.instance.ref();
 
   @override
   void initState() {
@@ -28,6 +37,9 @@ class _TradingProfilePageState extends State<TradingProfilePage>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     )..forward();
+
+    // Fetch user data on init
+    _fetchUserData();
   }
 
   @override
@@ -36,9 +48,72 @@ class _TradingProfilePageState extends State<TradingProfilePage>
     super.dispose();
   }
 
+  // Add this method to fetch user data
+  Future<void> _fetchUserData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final snapshot = await _database.child('regusers/${user.uid}').get();
+
+        if (snapshot.exists) {
+          final data = snapshot.value as Map<dynamic, dynamic>;
+          setState(() {
+            _privacyMode = data['rg_privacy'] ?? false;
+            _isLoading = false;
+          });
+        } else {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  // Add this method to update privacy setting
+  Future<void> _updatePrivacySetting(bool value) async {
+    final theme = Theme.of(context);
+    String up_message = value ? "Privacy turned on" : "Privacy turn off";
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await _database.child('regusers/${user.uid}/rg_privacy').set(value);
+        setState(() {
+          _privacyMode = value;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(up_message,
+                style: GoogleFonts.inter(color: theme.colorScheme.onPrimary)),
+            backgroundColor: theme
+                .colorScheme.primary, // SnackBar consistent with primary color
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            duration: Duration(milliseconds: 1500),
+            // margin: EdgeInsets.only(bottom: 70), // Add bottom margin
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error updating privacy setting: $e');
+      // Revert the UI change if update fails
+      setState(() {
+        _privacyMode = !value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -50,6 +125,12 @@ class _TradingProfilePageState extends State<TradingProfilePage>
               _buildHeader(theme),
               // _buildProfileStats(theme),
               _buildOptionsLists(theme),
+              InkWell(
+                  onTap: () {
+                    OpenHelper.open_url(
+                        "https://github.com/optionxi/optionxi-flutter-community");
+                  },
+                  child: _buildFooter(isDark))
             ],
           ),
         ),
@@ -225,19 +306,36 @@ class _TradingProfilePageState extends State<TradingProfilePage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // _buildSection(
-            //     "Trading",
-            //     [
-            //       OptionItem("Portfolio Overview", Icons.account_balance_wallet,
-            //           badgeText: "New", onTap: goToPortfolioPage),
-            //       OptionItem("Active Positions", Icons.candlestick_chart,
-            //           onTap: goToTradersPredictions),
-            //       OptionItem("Trading History", Icons.history,
-            //           onTap: goToTradingIdeas),
-            //       OptionItem("Risk Management", Icons.shield,
-            //           onTap: goToMarketNews),
-            //     ],
-            //     theme),
+            _buildSection(
+                "Trading",
+                [
+                  // OptionItem("Active Positions", Icons.candlestick_chart,
+                  //     onTap: goToTradersPredictions),
+                  // OptionItem("Trading History", Icons.history,
+                  //     onTap: goToTradingIdeas),
+                  // OptionItem("Risk Management", Icons.shield,
+                  //     onTap: goToMarketNews),
+                  OptionItem("Live virtual trading", Icons.bolt,
+                      badgeText: "Beta", onTap: gotoBrokerConnect),
+                  OptionItem("Leaderboard", Icons.account_balance_wallet,
+                      badgeText: "New", onTap: goToLeaderBoardPage),
+                  OptionItem(
+                    "Privacy Mode",
+                    Icons.privacy_tip,
+                    trailing: _isLoading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Switch(
+                            value: _privacyMode,
+                            onChanged: (value) => _updatePrivacySetting(value),
+                            activeColor: theme.colorScheme.primary,
+                          ),
+                  ),
+                ],
+                theme),
             _buildSection(
                 "Account",
                 [
@@ -303,8 +401,8 @@ class _TradingProfilePageState extends State<TradingProfilePage>
                       path: 'optionxi24@gmail.com',
                       // Optional query parameters:
                       queryParameters: {
-                        'subject': 'Your Subject',
-                        'body': 'Hello, this is the body of the email.'
+                        'subject': 'Customer Support',
+                        'body': 'Hello team, I would like to ask about '
                       },
                     );
 
@@ -426,6 +524,22 @@ class _TradingProfilePageState extends State<TradingProfilePage>
     );
   }
 
+  void goToLeaderBoardPage() {
+    //Go to OTP entering Page
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LeaderboardPage()),
+    );
+  }
+
+  void gotoBrokerConnect() {
+    //Go to OTP entering Page
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => BrokerConnectPage()),
+    );
+  }
+
   void goToMarketNews() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => TradingNewsPage()));
@@ -451,4 +565,180 @@ class OptionItem {
 
   OptionItem(this.title, this.icon,
       {this.badgeText, this.trailing, this.onTap});
+}
+
+Widget _buildFooter(bool isDark) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    padding: EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: isDark ? Color(0xFF1E293B) : Colors.grey[50],
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey[200]!,
+      ),
+    ),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildFooterItem(
+                'Smart', FontAwesomeIcons.brain, Color(0xFF3B82F6), isDark),
+            _buildFooterItem(
+                'Fast', FontAwesomeIcons.bolt, Color(0xFFEF4444), isDark),
+            _buildFooterItem('Reliable', FontAwesomeIcons.heartPulse,
+                Color(0xFF8B5CF6), isDark),
+          ],
+        ),
+        SizedBox(height: 20),
+        Divider(
+          color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey[300],
+        ),
+        SizedBox(height: 20),
+
+        // GitHub Section
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark ? Color(0xFF0F172A) : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey[200]!,
+            ),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.github,
+                    size: 20,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'Open Source',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Text(
+                'optionxi/optionxi-flutter-community',
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ),
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFFBBF24).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Color(0xFFFBBF24).withOpacity(0.3),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.star,
+                          size: 12,
+                          color: Color(0xFFFBBF24),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          'Star us',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFFBBF24),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF10B981),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.externalLinkAlt,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          'View on GitHub',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        SizedBox(height: 16),
+        Text(
+          '© 2025 OptionXi. Built for traders, by traders.',
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            color: isDark ? Colors.grey[500] : Colors.grey[600],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildFooterItem(String label, IconData icon, Color color, bool isDark) {
+  return Column(
+    children: [
+      Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: FaIcon(
+          icon,
+          size: 16,
+          color: color,
+        ),
+      ),
+      SizedBox(height: 6),
+      Text(
+        label,
+        style: GoogleFonts.inter(
+          fontSize: 11,
+          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ],
+  );
 }

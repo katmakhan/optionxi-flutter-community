@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:optionxi/Helpers/constants.dart';
 import 'package:optionxi/Helpers/volume_formater.dart';
+import 'package:optionxi/VirtualTrading/act_buyandsell_prev.dart';
+import 'package:optionxi/browser_lite.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 import 'package:optionxi/DataModels/dm_stock_details.dart';
@@ -407,14 +409,74 @@ class _StockDetailPageState extends State<StockDetailPage>
                           ),
                         ],
                       ),
-                      Row(
+                      Column(
                         children: [
-                          _buildIndicatorButton(
-                            stock.isUp ? 'Bullish' : 'Bearish',
-                            stockController.showVolume.value,
-                            () => stockController.toggleVolume(),
-                            isDark,
-                            stock.isUp,
+                          // _buildIndicatorButton(
+                          //   stock.isUp ? 'Bullish' : 'Bearish',
+                          //   stockController.showVolume.value,
+                          //   () => stockController.toggleVolume(),
+                          //   isDark,
+                          //   stock.isUp,
+                          // ),
+                          const SizedBox(height: 12),
+                          // Modern TradingView Chart Button
+                          Container(
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color:
+                                  isDark ? Colors.grey[800] : Colors.grey[100],
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                color: isDark
+                                    ? Colors.grey[700]!
+                                    : Colors.grey[300]!,
+                                width: 1,
+                              ),
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(18),
+                                onTap: () {
+                                  // Add your TradingView chart navigation logic here
+                                  // Get.toNamed('/tradingview/${stock.symbol}');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BrowserLite_V(
+                                            "https://in.tradingview.com/chart/?symbol=NSE%3A" +
+                                                widget.stockname.toString())),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.candlestick_chart_outlined,
+                                        size: 16,
+                                        color: isDark
+                                            ? Colors.grey[300]
+                                            : Colors.grey[700],
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        'View Chart',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: isDark
+                                              ? Colors.grey[300]
+                                              : Colors.grey[700],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -518,12 +580,12 @@ class _StockDetailPageState extends State<StockDetailPage>
           );
         }),
       ),
-      bottomNavigationBar: Obx(() {
-        if (stockController.isLoading.value || stockController.hasError.value) {
-          return const SizedBox();
-        }
-        return _buildBottomButtons(context, isDark);
-      }),
+      // bottomNavigationBar: Obx(() {
+      //   if (stockController.isLoading.value || stockController.hasError.value) {
+      //     return const SizedBox();
+      //   }
+      //   return _buildBottomButtons(context, isDark);
+      // }),
     );
   }
 
@@ -1528,6 +1590,9 @@ class _StockDetailPageState extends State<StockDetailPage>
   }
 
   Widget _buildBottomButtons(BuildContext context, bool isDark) {
+    final stockSymbol = widget.stockname.split(":").length > 1
+        ? widget.stockname.split(":")[1].split("-")[0]
+        : widget.stockname;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -1543,7 +1608,14 @@ class _StockDetailPageState extends State<StockDetailPage>
         children: [
           Expanded(
             child: FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BuyandSellPagePrev(stockSymbol, "EQ", false)),
+                );
+              },
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.green[isDark ? 600 : 500],
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -1554,7 +1626,14 @@ class _StockDetailPageState extends State<StockDetailPage>
           const SizedBox(width: 8),
           Expanded(
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BuyandSellPagePrev(stockSymbol, "EQ", true)),
+                );
+              },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.red[isDark ? 400 : 500],
                 side: BorderSide(color: Colors.red[isDark ? 400 : 500]!),

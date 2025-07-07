@@ -23,6 +23,12 @@ class _WatchlistPageState extends State<WatchlistPage> {
   }
 
   @override
+  void dispose() {
+    Get.delete<WatchlistController>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     watchlistController.refreshLTP();
     return Scaffold(

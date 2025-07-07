@@ -10,33 +10,51 @@ class BrowserLite_Widget extends StatefulWidget {
 }
 
 class _BrowserLite_WidgetState extends State<BrowserLite_Widget> {
+  late final WebViewController _controller;
+  bool isLoading = true;
+
   @override
-  Widget build(BuildContext context) {
-    Uri uri = Uri.parse(widget.url);
-    // print(uri);
+  void initState() {
+    super.initState();
+
+    Uri uri =
+        Uri.tryParse(widget.url) ?? Uri.parse("https://in.tradingview.com/");
     if (!uri.hasScheme) {
-      // If the URL doesn't have a scheme, add
-      uri = Uri.parse("https://in.tradingview.com/");
+      uri = Uri.parse("https://${widget.url}");
     }
 
-    final controller = WebViewController()
+    _controller = WebViewController()
       ..enableZoom(true)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
+          onProgress: (int progress) {},
+          onPageStarted: (String url) {
+            setState(() => isLoading = true);
           },
-          onPageStarted: (String url) {},
           onPageFinished: (String url) {
-            // print("Finishe url is: " + url);
-            print("Widget Loaded");
+            setState(() => isLoading = false);
+            print("Widget Loaded: $url");
           },
-          onWebResourceError: (WebResourceError error) {},
+          onWebResourceError: (WebResourceError error) {
+            print("WebView Error: ${error.description}");
+          },
         ),
       )
       ..loadRequest(uri);
-    return WebViewWidget(controller: controller);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        WebViewWidget(controller: _controller),
+        if (isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
+    );
   }
 }

@@ -24,12 +24,12 @@ class AuthService {
         // Handle auth state
         if (snapshot.hasData) {
           // User is logged in
-          // return Homepage();
-          return ModernTradingLoginPage();
+          return Homepage();
+          // return ModernTradingLoginPage();
         } else {
           // User is not logged in
-          // return ModernTradingLoginPage();
-          return Homepage();
+          return ModernTradingLoginPage();
+          // return Homepage();
         }
       },
     );

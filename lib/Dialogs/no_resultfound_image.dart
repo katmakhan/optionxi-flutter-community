@@ -28,7 +28,7 @@ Container noResultFoundPhoto(String heading, String asset) {
           height: 10,
         ),
         Text(
-          "The following query resulted in zero result, Please check again after sometime. If you still facing the issue, kindly contact the admin \n\n email: optionxi24@gmail.com",
+          "The following query resulted in zero result, Please check again after sometime. If you still facing the issue, kindly contact the admin \n\n email: appoptionxi@gmail.com",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Kanit',
@@ -71,7 +71,7 @@ Container noResultFoundPhotoDark(String heading, String asset) {
           height: 10,
         ),
         Text(
-          "The following query resulted in zero result, Please check again after sometime. If you still facing the issue, kindly contact the admin \n\n email: optionxi24@gmail.com",
+          "The following query resulted in zero result, Please check again after sometime. If you still facing the issue, kindly contact the admin \n\n email: appoptionxi@gmail.com",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Kanit',

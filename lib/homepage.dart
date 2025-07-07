@@ -7,7 +7,7 @@ import 'package:optionxi/Dialogs/custom_dialog.dart';
 import 'package:optionxi/Helpers/open_url.dart';
 import 'package:optionxi/Helpers/update_helper.dart';
 import 'package:optionxi/Main_Frags/frag_home.dart';
-import 'package:optionxi/Main_Frags/frag_orders.dart';
+import 'package:optionxi/Main_Frags/frag_virtualtrading.dart';
 import 'package:optionxi/Main_Frags/frag_tools.dart';
 import 'package:optionxi/Main_Frags/frag_watchlist.dart';
 import 'package:optionxi/Main_Frags/frag_profile.dart';
@@ -42,9 +42,9 @@ class _HomepageState extends State<Homepage> {
       case 0:
         return TradingHomeScreen();
       case 1:
-        return WatchlistPage();
+        return VirtualTradingFragment();
       case 2:
-        return AdvancedOrdersPage();
+        return WatchlistPage();
       case 3:
         return AdvancedTradingToolsPage();
       case 4:

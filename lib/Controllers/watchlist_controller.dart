@@ -78,8 +78,10 @@ class WatchlistController extends GetxController {
           .listen(
         (stockDataList) {
           // Update watchlist stocks with real-time data
+
           for (var stockData in stockDataList) {
             final updatedStock = DataStockModel.fromJson(stockData);
+            // print("Updating stocks watchlist" + updatedStock.symbol.toString());
             final index = watchlistStocks
                 .indexWhere((s) => s.symbol == updatedStock.symbol);
 

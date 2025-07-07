@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:optionxi/Components/custom_searchbar.dart';
-import 'package:optionxi/Helpers/global_snackbar_get.dart';
 import 'package:optionxi/Main_Pages/act_leaderboard.dart';
 import 'package:optionxi/Main_Pages/act_search_stocks.dart';
 import 'package:optionxi/Main_Pages/act_traderprofile.dart';
@@ -282,8 +281,9 @@ class _TradingHomeScreenState extends State<TradingHomeScreen>
                             path: 'optionxi24@gmail.com',
                             // Optional query parameters:
                             queryParameters: {
-                              'subject': 'Your Subject',
-                              'body': 'Hello, this is the body of the email.'
+                              'subject': 'Algo Trading',
+                              'body':
+                                  'Hello, Kindly guide me through the process of deploying algo in cloud,'
                             },
                           );
 

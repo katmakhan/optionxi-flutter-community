@@ -85,25 +85,25 @@ class _AdvancedTradingToolsPageState extends State<AdvancedTradingToolsPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Trading Hub',
+                  'Trading Tools',
                   style: GoogleFonts.poppins(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: (isDark ? Colors.white : Colors.black)
-                        .withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.search,
-                        color: isDark ? Colors.white70 : Colors.black54),
-                    onPressed: () {},
-                  ),
-                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     color: (isDark ? Colors.white : Colors.black)
+                //         .withValues(alpha: 0.1),
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                //   child: IconButton(
+                //     icon: Icon(Icons.search,
+                //         color: isDark ? Colors.white70 : Colors.black54),
+                //     onPressed: () {},
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: 12),
@@ -284,6 +284,52 @@ class _AdvancedTradingToolsPageState extends State<AdvancedTradingToolsPage>
       },
     ];
 
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: tools.map((section) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: (isDark ? Colors.white : Colors.black)
+                            .withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: FaIcon(section['icon'] as IconData,
+                          color: isDark ? Colors.white : Colors.black87,
+                          size: 20),
+                    ),
+                    SizedBox(width: 16),
+                    Text(
+                      section['title'] as String,
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ...((section['tools'] as List).map((tool) {
+                return _buildToolCard(tool, isDark);
+              })),
+              SizedBox(height: 16),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildToolCard(Map<String, dynamic> tool, bool isDark) {
     return SlideTransition(
       position: Tween<Offset>(
         begin: Offset(0, 0.2),
@@ -292,138 +338,93 @@ class _AdvancedTradingToolsPageState extends State<AdvancedTradingToolsPage>
         parent: _controller,
         curve: Interval(0.2, 0.8, curve: Curves.easeOutCubic),
       )),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: tools.map((section) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: (isDark ? Colors.white : Colors.black)
-                              .withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: FaIcon(section['icon'] as IconData,
-                            color: isDark ? Colors.white : Colors.black87,
-                            size: 20),
-                      ),
-                      SizedBox(width: 16),
-                      Text(
-                        section['title'] as String,
-                        style: GoogleFonts.spaceGrotesk(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ...((section['tools'] as List).map((tool) {
-                  return _buildToolCard(tool, isDark);
-                })),
-                SizedBox(height: 16),
-              ],
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildToolCard(Map<String, dynamic> tool, bool isDark) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [
-                  Colors.white.withValues(alpha: 0.1),
-                  Colors.white.withValues(alpha: 0.05),
-                ]
-              : [
-                  Colors.grey[100]!,
-                  Colors.white,
-                ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color:
-              isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey[300]!,
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: 0.2)
-                : Colors.grey.withValues(alpha: 0.2),
-            blurRadius: 10,
-            offset: Offset(0, 4),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isDark
+                ? [
+                    Colors.white.withValues(alpha: 0.1),
+                    Colors.white.withValues(alpha: 0.05),
+                  ]
+                : [
+                    Colors.grey[100]!,
+                    Colors.white,
+                  ],
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: tool['onTap'] as VoidCallback?, // Pass the onTap function
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: tool['gradient'] as List<Color>,
+          border: Border.all(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.grey[300]!,
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.2)
+                  : Colors.grey.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: tool['onTap'] as VoidCallback?, // Pass the onTap function
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: tool['gradient'] as List<Color>,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    borderRadius: BorderRadius.circular(16),
+                    child: FaIcon(
+                      tool['icon'] as IconData,
+                      color: Colors.white,
+                      size: 24,
+                    ),
                   ),
-                  child: FaIcon(
-                    tool['icon'] as IconData,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        tool['name'],
-                        style: GoogleFonts.spaceGrotesk(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tool['name'],
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        tool['description'],
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: isDark ? Colors.grey[400] : Colors.grey[700],
-                          height: 1.4,
+                        SizedBox(height: 4),
+                        Text(
+                          tool['description'],
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: isDark ? Colors.grey[400] : Colors.grey[700],
+                            height: 1.4,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Icon(Icons.arrow_forward_ios,
-                    color: (isDark ? Colors.white : Colors.black)
-                        .withValues(alpha: 0.5),
-                    size: 16),
-              ],
+                  Icon(Icons.arrow_forward_ios,
+                      color: (isDark ? Colors.white : Colors.black)
+                          .withValues(alpha: 0.5),
+                      size: 16),
+                ],
+              ),
             ),
           ),
         ),

@@ -9,6 +9,7 @@ import 'package:optionxi/DataModels/sample_stock_symbols.dart';
 import 'package:optionxi/Helpers/constants.dart';
 import 'package:optionxi/Helpers/volume_formater.dart';
 import 'package:optionxi/Main_Pages/act_stock_detail.dart';
+import 'package:optionxi/browser_lite.dart';
 
 class WatchlistItem extends StatefulWidget {
   final DataStockModel stock;
@@ -213,7 +214,8 @@ class _WatchlistItemState extends State<WatchlistItem> {
   }
 
   void _showStockDialog(DataStockModel stock, BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final TextStyle priceTextStyle = TextStyle(
       fontSize: 36,
       fontWeight: FontWeight.bold,
@@ -352,15 +354,75 @@ class _WatchlistItemState extends State<WatchlistItem> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    AnimatedPriceWidget(
-                      price: widget.stock.close,
-                      previousPrice: previousClose,
-                      wasUp: wasUp,
-                      style: priceTextStyle,
+                    // Price section on the left
+                    Expanded(
+                      child: AnimatedPriceWidget(
+                        price: widget.stock.close,
+                        previousPrice: previousClose,
+                        wasUp: wasUp,
+                        style: priceTextStyle,
+                      ),
+                    ),
+                    // View chart button on the right
+                    Container(
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.grey[800] : Colors.grey[100],
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(
+                          color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+                          width: 1,
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(18),
+                          onTap: () {
+                            // Add your TradingView chart navigation logic here
+                            // Get.toNamed('/tradingview/${stock.symbol}');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BrowserLite_V(
+                                      "https://in.tradingview.com/chart/?symbol=NSE%3A" +
+                                          stock.stckname.toString())),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.candlestick_chart_outlined,
+                                  size: 16,
+                                  color: isDark
+                                      ? Colors.grey[300]
+                                      : Colors.grey[700],
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'View Chart',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: isDark
+                                        ? Colors.grey[300]
+                                        : Colors.grey[700],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Divider(color: Theme.of(context).dividerColor),
@@ -387,72 +449,71 @@ class _WatchlistItemState extends State<WatchlistItem> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    SizedBox(
+                    Container(
                       width: double.infinity,
-                      child: FilledButton(
+                      height: 44,
+                      margin: const EdgeInsets.only(
+                          bottom: 16, right: 16, left: 16),
+                      child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StockDetailPage(
+                                        stockname:
+                                            _getActualStockSymbol(stock.symbol),
+                                      )));
                         },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Colors.green[600],
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primary,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                        ),
-                        child: const Text(
-                          'Buy',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        ).copyWith(
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed)) {
+                                return Colors.white.withValues(alpha: 0.1);
+                              }
+                              if (states.contains(MaterialState.hovered)) {
+                                return Colors.white.withValues(alpha: 0.05);
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.red[400],
-                          side: BorderSide(color: Colors.red[400]!),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Sell',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.analytics_outlined,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'View Stock Details',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 14,
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StockDetailPage(
-                                      stockname:
-                                          _getActualStockSymbol(stock.symbol),
-                                    )));
-                      },
-                      child: Text(
-                        'View Technical Analysis',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
